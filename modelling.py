@@ -13,7 +13,7 @@ from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.preprocessing import StandardScaler
 
 # Inisialisasi DagsHub
-dagshub.init(repo_owner='fauzinoorsyabani', repo_name='Membangun_Model_Fauzi-Noor-Syabani', mlflow=True)
+# dagshub.init(repo_owner='fauzinoorsyabani', repo_name='Membangun_Model_Fauzi-Noor-Syabani', mlflow=True)
 
 def hyperparameter_tuning():
     # 1. Load Data
