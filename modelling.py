@@ -31,17 +31,24 @@ def train_baseline():
     X_test_scaled = scaler.transform(X_test)
 
     # 2. MLflow Tracking - Autolog
-    mlflow.set_experiment("Machine_Failure_Prediction")
+    # Avoid set_experiment so it doesn't conflict with mlflow run
     mlflow.sklearn.autolog()
 
-    with mlflow.start_run(run_name="Baseline_RF"):
-        # Model baseline tanpa hyperparameter tuning
-        model = RandomForestClassifier(random_state=42)
-        model.fit(X_train_scaled, y_train)
+    # mlflow run already starts a run, so we can just use active run or start one safely by catching it
+    active_run = mlflow.active_run()
+    if not active_run:
+        mlflow.start_run(run_name="Baseline_RF")
+    
+    # Model baseline tanpa hyperparameter tuning
+    model = RandomForestClassifier(random_state=42)
+    model.fit(X_train_scaled, y_train)
 
-        # Evaluasi
-        accuracy = model.score(X_test_scaled, y_test)
-        print(f"Baseline Accuracy: {accuracy:.4f}")
+    # Evaluasi
+    accuracy = model.score(X_test_scaled, y_test)
+    print(f"Baseline Accuracy: {accuracy:.4f}")
+    
+    if not active_run:
+        mlflow.end_run()
 
 
 if __name__ == "__main__":
